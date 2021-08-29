@@ -1,0 +1,11 @@
+{
+	"editor.formatOnSave": true,
+	"python.formatting.provider": "autopep8",
+	"python.linting.enabled": true,
+	"python.linting.lintOnSave": true,
+	"python.linting.flake8Enabled": true,
+	"python.formatting.autopep8Args": [
+		"--max-line-length=160"
+	]
+	// "python.linting.flake8Args": ["max-line-length=160"]
+}
