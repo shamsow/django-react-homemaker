@@ -23,9 +23,8 @@
 <!-- [![Contributors][contributors-shield]][contributors-url] -->
 <!-- [![Forks][forks-shield]][forks-url] -->
 <!-- [![Stargazers][stars-shield]][stars-url] -->
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+![GitHub issues][issues-url] [![LinkedIn][linkedin-shield]][linkedin-url]
+<!-- [![MIT License][license-shield]][license-url] -->
 
 
 
@@ -159,8 +158,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 [stars-shield]: https://img.shields.io/github/stars/shamsow/repo.svg?style=for-the-badge
 [stars-url]: https://github.com/shamsow/django-react-homemaker/stargazers
 [issues-shield]: https://img.shields.io/github/issues/shamsow/repo.svg?style=for-the-badge
-[issues-url]: https://github.com/shamsow/django-react-homemaker/issues
-[license-shield]: https://img.shields.io/github/license/shamsow/repo.svg?style=for-the-badge
+[issues-url]: https://img.shields.io/github/issues/shamsow/django-react-homemaker
+<!-- [license-shield]: ![GitHub issues](https://img.shields.io/github/issues/shamsow/django-react-homemaker) -->
 [license-url]: https://github.com/shamsow/django-react-homemaker/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/shamsow
+[linkedin-url]: https://linkedin.com/in/sadat-shams-chowdhury
