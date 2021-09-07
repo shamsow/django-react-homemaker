@@ -32,7 +32,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/shamsow/repo_name">
+  <a href="https://github.com/shamsow/django-react-homemaker">
     <img src="logo.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -41,14 +41,14 @@
   <p align="center">
     One stop solution for home groceries tracking and meal planning
     <br />
-    <a href="https://github.com/shamsow/repo_name"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/shamsow/django-react-homemaker"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/shamsow/repo_name">View Demo</a>
+    <a href="https://github.com/shamsow/django-react-homemaker">View Demo</a>
     ·
-    <a href="https://github.com/shamsow/repo_name/issues">Report Bug</a>
+    <a href="https://github.com/shamsow/django-react-homemaker/issues">Report Bug</a>
     ·
-    <a href="https://github.com/shamsow/repo_name/issues">Request Feature</a>
+    <a href="https://github.com/shamsow/django-react-homemaker/issues">Request Feature</a>
   </p>
 </p>
 
@@ -116,7 +116,7 @@ To get a local copy up and running follow these simple steps.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/shamsow/repo_name.git
+   git clone https://github.com/shamsow/django-react-homemaker.git
    ```
 2. Install NPM packages
    ```sh
@@ -141,7 +141,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_ --
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/shamsow/repo_name/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/shamsow/django-react-homemaker/issues) for a list of proposed features (and known issues).
 
 <!-- LICENSE -->
 ## License
@@ -153,14 +153,14 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/shamsow/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/shamsow/repo_name/graphs/contributors
+[contributors-url]: https://github.com/shamsow/django-react-homemaker/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/shamsow/repo.svg?style=for-the-badge
-[forks-url]: https://github.com/shamsow/repo_name/network/members
+[forks-url]: https://github.com/shamsow/django-react-homemaker/network/members
 [stars-shield]: https://img.shields.io/github/stars/shamsow/repo.svg?style=for-the-badge
-[stars-url]: https://github.com/shamsow/repo_name/stargazers
+[stars-url]: https://github.com/shamsow/django-react-homemaker/stargazers
 [issues-shield]: https://img.shields.io/github/issues/shamsow/repo.svg?style=for-the-badge
-[issues-url]: https://github.com/shamsow/repo_name/issues
+[issues-url]: https://github.com/shamsow/django-react-homemaker/issues
 [license-shield]: https://img.shields.io/github/license/shamsow/repo.svg?style=for-the-badge
-[license-url]: https://github.com/shamsow/repo_name/blob/master/LICENSE.txt
+[license-url]: https://github.com/shamsow/django-react-homemaker/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/shamsow
