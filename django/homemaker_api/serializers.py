@@ -20,6 +20,14 @@ class IngredientSerializerRelated(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class UnitSerializer(serializers.BaseSerializer):
+    def to_representation(self, instance):
+
+        return {
+            'allows_units': Ingredient.UNIT_CHOICES
+        }
+
+
 class RecipeSerializer(serializers.ModelSerializer):
     # ingredients = serializers.HyperlinkedRelatedField(
     #     many=True,

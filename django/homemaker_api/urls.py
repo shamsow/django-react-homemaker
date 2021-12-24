@@ -2,7 +2,7 @@ from django.urls import path
 from django.urls import register_converter
 from datetime import datetime
 from .views import (PantryList, CookbookList, IngredientDetail,
-                    IngredientCreate, IngredientDelete, RecipeDetail,
+                    IngredientCreate, IngredientDelete, UnitList, RecipeDetail,
                     RecipeDetailSLUG, RecipeCreate, MealPlanList,
                     MealPlanQuery, MealPlanDetail, MealCreate)
 
@@ -26,6 +26,7 @@ urlpatterns = [
     path('pantry/ingredient/<int:pk>', IngredientDetail.as_view(), name='ingredient-detail'),
     path('pantry/ingredient/create', IngredientCreate.as_view(), name='ingredient-create'),
     path('pantry/ingredient/delete/<int:pk>/', IngredientDelete.as_view(), name='ingredient-delete'),
+    path('pantry/units', UnitList.as_view(), name='unit-list'),
     path('cookbook/all', CookbookList.as_view(), name='cookbook-list'),
     path('cookbook/recipe/<int:pk>', RecipeDetail.as_view(), name='recipe-detail'),
     path('cookbook/recipe/<slug:slug>', RecipeDetailSLUG.as_view(), name='recipe-detail'),
