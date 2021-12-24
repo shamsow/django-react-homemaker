@@ -31,6 +31,7 @@ import axiosInstance from '../axios';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Alert from './Alert';
+import PantryForm from './PantryForm';
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
@@ -51,6 +52,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
+// import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
+import AddIcon from '@material-ui/icons/Add';
 
 // function createData(name, calories, fat, carbs, protein) {
 //   return { name, calories, fat, carbs, protein };
@@ -194,6 +198,8 @@ const EnhancedTableToolbar = (props) => {
   const { numSelected, selected } = props;
   const [open, setOpen] = React.useState(false);
 	const [message, setMessage] = React.useState("");
+
+
   // console.log(selected);
 
   const handleDelete = () => {
@@ -204,9 +210,15 @@ const EnhancedTableToolbar = (props) => {
         .then((response) => console.log(response))
         .catch((error) => console.log(error));
 
-        setOpen(true);
-				setMessage(numSelected + "ingredient(s) deleted!");
+
     }
+    setOpen(true);
+    setMessage(numSelected + " ingredient(s) deleted!");
+    // numSelected = 0;
+    // selected = [];
+    props.resetSelected();
+    props.refetchData();
+
   }
 
   return (
@@ -233,9 +245,14 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
+        <Tooltip title="Add Ingredient">
+          <IconButton aria-label="add ingredient">
+            <Form 
+              title={<AddIcon />}
+              user={props.user}      
+              refetchData={props.refetchData}
+            >
+            </Form>
           </IconButton>
         </Tooltip>
       )}
@@ -281,9 +298,12 @@ export default function EnhancedTable() {
   const [orderBy, setOrderBy] = React.useState('name');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState([{"user": null}]);
+  const [refetchSwitch, triggerSwitch] = React.useState(false);
+
+
 
   useEffect(() => {
     axiosInstance.get("pantry/all")
@@ -293,7 +313,16 @@ export default function EnhancedTable() {
       setData(response.data);
     })
       .catch((error) => console.log(error));
-  }, []);
+  }, [refetchSwitch]);
+
+  const refetchData = () => {
+    console.log("Refetching data");
+    triggerSwitch(!refetchSwitch);
+  };
+
+  const resetSelected = () => {
+    setSelected([]);
+  }
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -351,7 +380,12 @@ export default function EnhancedTable() {
     // <div className={classes.root, classes.appBarSeparator}>
       <Grid item xs={12} className={classes.root, classes.appBarSeparator}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} selected={selected}/>
+        <EnhancedTableToolbar 
+          numSelected={selected.length} 
+          selected={selected} 
+          refetchData={refetchData} 
+          resetSelected={resetSelected}
+          user={data[0]["user"]}/>
         <TableContainer>
           <Table
             className={classes.table}
@@ -378,7 +412,7 @@ export default function EnhancedTable() {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.id)}
+                      // onClick={(event) => handleClick(event, row.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -389,6 +423,7 @@ export default function EnhancedTable() {
                         <Checkbox
                           checked={isItemSelected}
                           inputProps={{ 'aria-labelledby': labelId }}
+                          onClick={(event) => handleClick(event, row.id)}
                         />
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
@@ -399,6 +434,18 @@ export default function EnhancedTable() {
                       <TableCell>{row.recipe_count}</TableCell>
                       <TableCell>{new Date(row.created).toUTCString()}</TableCell>
                       <TableCell>{new Date(row.modified).toUTCString()}</TableCell>
+                      <TableCell>
+                        <PantryForm 
+                          title={<EditIcon/>}
+                          user={row.user}
+                          item-id={row.id}
+                          item-name={row.name}
+                          item-unit={row.unit}
+                          item-amount={row.amount}
+                          refetchData={refetchData}
+                        >
+                        </PantryForm>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
