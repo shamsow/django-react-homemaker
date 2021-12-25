@@ -79,6 +79,8 @@ const LayoutTextFields = (props) => {
 			})
 			.then((res) => {
 				console.log("Succesfully updated!");
+				props.refetchData();
+				props.closeForm();
 				//console.log(res);
 				//console.log(res.data);
 			})
@@ -87,8 +89,7 @@ const LayoutTextFields = (props) => {
 				console.log(error.response.data.detail);
 				
 			});
-		props.closeForm();
-		props.refetchData();
+
 
 	};
 
@@ -106,6 +107,8 @@ const LayoutTextFields = (props) => {
 			})
 			.then((res) => {
 				console.log("Succesfully created!");
+				props.refetchData();
+				props.closeForm();
 				//console.log(res);
 				//console.log(res.data);
 			})
@@ -114,8 +117,7 @@ const LayoutTextFields = (props) => {
 				console.log(error.response.data.detail);
 				
 			});
-		props.refetchData();
-		props.closeForm();
+
 	};
   
 	return (

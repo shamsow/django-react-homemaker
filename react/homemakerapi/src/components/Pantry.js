@@ -207,7 +207,10 @@ const EnhancedTableToolbar = (props) => {
     for(let i = 0; i < numSelected; i++) {
       // console.log(selected[i]);
       axiosInstance.delete("pantry/ingredient/delete/" + selected[i] + "/")
-        .then((response) => console.log(response))
+        .then((response) => {
+          props.resetSelected();
+          props.refetchData();
+        })
         .catch((error) => console.log(error));
 
 
@@ -216,8 +219,7 @@ const EnhancedTableToolbar = (props) => {
     setMessage(numSelected + " ingredient(s) deleted!");
     // numSelected = 0;
     // selected = [];
-    props.resetSelected();
-    props.refetchData();
+
 
   }
 
@@ -247,12 +249,12 @@ const EnhancedTableToolbar = (props) => {
       ) : (
         <Tooltip title="Add Ingredient">
           <IconButton aria-label="add ingredient">
-            <Form 
+            <PantryForm 
               title={<AddIcon />}
               user={props.user}      
               refetchData={props.refetchData}
             >
-            </Form>
+            </PantryForm>
           </IconButton>
         </Tooltip>
       )}
