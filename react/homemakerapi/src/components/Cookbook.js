@@ -37,12 +37,14 @@ export default function Cookbook() {
 			{data.map((item) => (
 				<Grid item xs={3}>
 					<RecipeCard 
-						id={item.id}
-						title={item.name}
-						date={new Date(item.modified)}
-						ingredients={item.ingredients}
-						description={item.description}
-						instructions={item.instructions}
+						// id={item.id}
+						// name={item.name}
+						// created={new Date(item.modified)}
+						// ingredients={item.ingredients}
+						// description={item.description}
+						// instructions={item.instructions}
+						recipe={item}
+						makeExpanded={false}
 					/>				
 				</Grid>
 			))}

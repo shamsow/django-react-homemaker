@@ -43,9 +43,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function RecipeCard(props) {
-	// console.log(props);
+  const { recipe, makeExpanded } = props;
+	// console.log(recipe);
   const classes = useStyles();
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(makeExpanded);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -53,7 +54,7 @@ export default function RecipeCard(props) {
 
 
   return (
-    <Card className={classes.root} key={props.id}>
+    <Card className={classes.root} key={recipe.id}>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
@@ -65,8 +66,8 @@ export default function RecipeCard(props) {
             <MoreVertIcon />
           </IconButton>
         }
-        title={props.title}
-        subheader={props.date.toLocaleDateString()}
+        title={recipe.name}
+        subheader={new Date(recipe.created).toUTCString()}
       />
       <CardMedia
         className={classes.media}
@@ -75,16 +76,16 @@ export default function RecipeCard(props) {
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-         {props.description}
+         {recipe.description}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>
-        <IconButton aria-label="share">
+        {/* <IconButton aria-label="share">
           <ShareIcon />
-        </IconButton>
+        </IconButton> */}
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -100,14 +101,14 @@ export default function RecipeCard(props) {
         <CardContent>
 		  <Typography paragraph>Ingredients: 
 		  	
-			  {props.ingredients.map((ingredient) => (
+			  {recipe.ingredients.map((ingredient) => (
 				  <Typography variant="caption" display="block" gutterBottom>{ingredient.name}</Typography>
 			  ))}
 
 		  </Typography>
           <Typography paragraph>Method:
 			<Typography variant="caption" display="block" gutterBottom>
-				{props.instructions}
+				{recipe.instructions}
 			</Typography>
 		  </Typography>
         </CardContent>
