@@ -5,13 +5,16 @@ from datetime import datetime
 import random
 
 ings = ['Apple', 'Oranges', 'Coffee', 'Onion', 'Cheese', 'Potato', 'Chili', 'Pepper', 'Capsicum', 'Yoghurt', 'Milk', 'Bread', 'Tomato', 'Ginger', 'Garlic', 'Scotch', 'Beer', 'Cereal', 'Thyme', 'Rhosemary', 'Parsley', 'Sausage', 'Salt', 'Sugar', 'Chicken', 'Beef', 'Pork', 'Celery', 'Spinach', 'Kale']
+instructions = ["Do it nice", "Make it real good", "Better be bussin", "Just cook it homie", "Scrumpdiliupmtious"]
 user = NewUser.objects.get(pk=1)
+
 for ing in ings:
      Ingredient.objects.create(name=ing, amount=Decimal(random.randint(0, 999)), unit = 'mg', user=user)
 
 ingredients = Ingredient.objects.all()
 for i in range(15):
-     r = Recipe(name=f"Recipe-{i}", instructions="Do it nice", rating=random.randint(0, 10), user=user)
+     r = Recipe(name=f"Recipe-{i}", instructions=random.choice(instructions), rating=random.randint(0, 10), user=user)
      r.save()
      for ing in random.choices(ingredients, k=3):
              r.ingredients.add(ing)
+
