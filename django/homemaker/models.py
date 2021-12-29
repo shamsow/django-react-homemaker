@@ -90,6 +90,9 @@ class MealPlan(models.Model):
 
     def __str__(self):
         return f"{self.date}"
+    
+    class Meta:
+        ordering = ['date']
 
 
 # Add Meal to MealPlan after a new Meal is saved

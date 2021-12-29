@@ -89,6 +89,12 @@ class CookbookList(generics.ListAPIView):
         return Recipe.objects.filter(user=user)
 
 
+class RecipeDetailREADONLY(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializerGET
+
+
 class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     queryset = Recipe.objects.all()
@@ -122,7 +128,7 @@ class RecipeCreate(generics.CreateAPIView):
 
 # MealPlans
 class MealPlanList(generics.ListAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     queryset = MealPlan.objects.all()
     serializer_class = MealPlanSerializerGET
 
@@ -133,9 +139,9 @@ class MealPlanList(generics.ListAPIView):
 
 
 class MealPlanDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
-    queryset = MealPlan.objects.all()
-    serializer_class = MealPlanSerializer
+    # permission_classes = [IsAuthenticated]
+    queryset = Meal.objects.all()
+    serializer_class = MealSerializer
 
 
 class MealPlanQuery(generics.ListCreateAPIView):
