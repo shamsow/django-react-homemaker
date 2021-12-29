@@ -125,6 +125,7 @@ const LayoutTextFields = (props) => {
 		<div>
 		<form noValidate>
 		  <TextField
+		  	required
 			id="outlined-full-width"
 			label="Ingredient Name"
 			style={{ margin: 8 }}
@@ -139,6 +140,7 @@ const LayoutTextFields = (props) => {
 		  />
 		  <TextField
 			select
+			required
 			label="Unit"
 			className={classes.textField}
 			defaultValue={props["item-unit"] ? props["item-unit"] : ""}
@@ -156,6 +158,7 @@ const LayoutTextFields = (props) => {
 			))}
 			</TextField>
 			<TextField
+				required
 				label="Amount"
 				id="outlined-margin-dense"
 				defaultValue={props["item-amount"] ? props["item-amount"] : ""}
@@ -172,7 +175,7 @@ const LayoutTextFields = (props) => {
 			color="primary"
 			onClick={props["item-name"]? handleUpdate: handleCreate}
 			>
-				Submit
+				{props["item-name"]? "Update": "Create"}
 			</Button>
 		  </form>
 		</div>
@@ -199,7 +202,7 @@ export default function FormDialog(props) {
         {props.title}
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Create/Update Ingredient</DialogTitle>
+        <DialogTitle id="form-dialog-title">{props["item-name"]? "Update ": "Create "}Ingredient</DialogTitle>
         <DialogContent>
           {/* <DialogContentText>
             
