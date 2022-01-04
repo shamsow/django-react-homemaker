@@ -121,7 +121,7 @@ class RecipeDetailSLUG(generics.RetrieveUpdateDestroyAPIView):
 
 
 class RecipeCreate(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
 
