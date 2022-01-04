@@ -14,16 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from . import views
 from django.urls import path, include
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 
-# app_name = 'homemaker_api'
+# app_name = 'homemaker_core'
 
 urlpatterns = [
+    path('', views.default_view, name='home'),
     path('admin/', admin.site.urls),
+
     path('api/', include('homemaker_api.urls', namespace='homemaker_api')),
     path('api/user/', include('users.urls', namespace='users')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
