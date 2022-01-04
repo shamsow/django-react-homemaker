@@ -1,36 +1,9 @@
-// import React from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
-// import DataTable from './DataTable';
-// import Grid from '@material-ui/core/Grid';
-// props.address => api endpoint 	 	String
-// props.title => data identity  	 	String
-// props.headings => table headers 		Array
-// props.fields => object fields 		Array
-
-
-
-// export default function Pantry() {
-// 		return (
-// 			<Grid item xs={12}>
-            
-//                 <DataTable
-// 				address="pantry/all"
-// 				title="Pantry - All your Ingredients"
-// 				headings={["Name", "Amount", "Unit", "Date Added"]}
-// 				fields={["name", "amount", "unit"]}
-// 				/>
-// 			</Grid>
-// 		);
-// 	}
-//   export default Pantry;
-
-
-
 import React, { useEffect } from 'react';
 import axiosInstance from '../axios';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Alert from './Alert';
+import PantryForm from './PantryForm';
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
@@ -50,27 +23,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
-
-// function createData(name, calories, fat, carbs, protein) {
-//   return { name, calories, fat, carbs, protein };
-// }
-
-// const rows = [
-//   createData('Cupcake', 305, 3.7, 67, 4.3),
-//   createData('Donut', 452, 25.0, 51, 4.9),
-//   createData('Eclair', 262, 16.0, 24, 6.0),
-//   createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-//   createData('Gingerbread', 356, 16.0, 49, 3.9),
-//   createData('Honeycomb', 408, 3.2, 87, 6.5),
-//   createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-//   createData('Jelly Bean', 375, 0.0, 94, 0.0),
-//   createData('KitKat', 518, 26.0, 65, 7.0),
-//   createData('Lollipop', 392, 0.2, 98, 0.0),
-//   createData('Marshmallow', 318, 0, 81, 2.0),
-//   createData('Nougat', 360, 19.0, 9, 37.0),
-//   createData('Oreo', 437, 18.0, 63, 4.0),
-// ];
+// import FilterListIcon from '@material-ui/icons/FilterList';
+// import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
+import AddIcon from '@material-ui/icons/Add';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -97,14 +53,6 @@ function stableSort(array, comparator) {
   });
   return stabilizedThis.map((el) => el[0]);
 }
-
-// const headCells = [
-//   { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
-//   { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-//   { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-//   { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-//   { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
-// ];
 
 const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
@@ -194,6 +142,8 @@ const EnhancedTableToolbar = (props) => {
   const { numSelected, selected } = props;
   const [open, setOpen] = React.useState(false);
 	const [message, setMessage] = React.useState("");
+
+
   // console.log(selected);
 
   const handleDelete = () => {
@@ -201,12 +151,20 @@ const EnhancedTableToolbar = (props) => {
     for(let i = 0; i < numSelected; i++) {
       // console.log(selected[i]);
       axiosInstance.delete("pantry/ingredient/delete/" + selected[i] + "/")
-        .then((response) => console.log(response))
+        .then((response) => {
+          props.resetSelected();
+          props.refetchData();
+        })
         .catch((error) => console.log(error));
 
-        setOpen(true);
-				setMessage(numSelected + "ingredient(s) deleted!");
+
     }
+    setOpen(true);
+    setMessage(numSelected + " ingredient(s) deleted!");
+    // numSelected = 0;
+    // selected = [];
+
+
   }
 
   return (
@@ -233,10 +191,15 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
+        <Tooltip title="Add Ingredient">
+          {/* <IconButton aria-label="add ingredient"> */}
+            <PantryForm 
+              title={<AddIcon />}
+              user={props.user}      
+              refetchData={props.refetchData}
+            >
+            </PantryForm>
+          {/* </IconButton> */}
         </Tooltip>
       )}
     </Toolbar>
@@ -270,8 +233,8 @@ const useStyles = makeStyles((theme) => ({
     width: 1,
   },
   appBarSeparator: {
-	marginTop: theme.spacing(8),
-	margin: theme.spacing(1),
+    marginTop: theme.spacing(10),
+    margin: theme.spacing(1),
   },
 }));
 
@@ -281,9 +244,12 @@ export default function EnhancedTable() {
   const [orderBy, setOrderBy] = React.useState('name');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState([{"user": null}]);
+  const [refetchSwitch, triggerSwitch] = React.useState(false);
+
+
 
   useEffect(() => {
     axiosInstance.get("pantry/all")
@@ -293,7 +259,16 @@ export default function EnhancedTable() {
       setData(response.data);
     })
       .catch((error) => console.log(error));
-  }, []);
+  }, [refetchSwitch]);
+
+  const refetchData = () => {
+    console.log("Refetching data");
+    triggerSwitch(!refetchSwitch);
+  };
+
+  const resetSelected = () => {
+    setSelected([]);
+  }
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -351,7 +326,12 @@ export default function EnhancedTable() {
     // <div className={classes.root, classes.appBarSeparator}>
       <Grid item xs={12} className={classes.root, classes.appBarSeparator}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} selected={selected}/>
+        <EnhancedTableToolbar 
+          numSelected={selected.length} 
+          selected={selected} 
+          refetchData={refetchData} 
+          resetSelected={resetSelected}
+          user={data[0]["user"]}/>
         <TableContainer>
           <Table
             className={classes.table}
@@ -378,7 +358,7 @@ export default function EnhancedTable() {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.id)}
+                      // onClick={(event) => handleClick(event, row.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -389,6 +369,7 @@ export default function EnhancedTable() {
                         <Checkbox
                           checked={isItemSelected}
                           inputProps={{ 'aria-labelledby': labelId }}
+                          onClick={(event) => handleClick(event, row.id)}
                         />
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
@@ -399,6 +380,18 @@ export default function EnhancedTable() {
                       <TableCell>{row.recipe_count}</TableCell>
                       <TableCell>{new Date(row.created).toUTCString()}</TableCell>
                       <TableCell>{new Date(row.modified).toUTCString()}</TableCell>
+                      <TableCell>
+                        <PantryForm 
+                          title={<EditIcon/>}
+                          user={row.user}
+                          item-id={row.id}
+                          item-name={row.name}
+                          item-unit={row.unit}
+                          item-amount={row.amount}
+                          refetchData={refetchData}
+                        >
+                        </PantryForm>
+                      </TableCell>
                     </TableRow>
                   );
                 })}

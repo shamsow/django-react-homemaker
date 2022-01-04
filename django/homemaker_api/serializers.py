@@ -19,6 +19,12 @@ class IngredientSerializerRelated(serializers.ModelSerializer):
         model = Ingredient
         fields = '__all__'
 
+class UnitSerializer(serializers.BaseSerializer):
+    def to_representation(self, instance):
+
+        return {
+            'allows_units': Ingredient.UNIT_CHOICES
+        }
 
 class RecipeSerializer(serializers.ModelSerializer):
     # ingredients = serializers.HyperlinkedRelatedField(
@@ -56,6 +62,12 @@ class MealSerializer(serializers.ModelSerializer):
         model = Meal
         fields = '__all__'
 
+class MealSerializerGET(serializers.ModelSerializer):
+    recipe = RecipeSerializerGET(read_only=True)
+    class Meta:
+        model = Meal
+        fields = '__all__'
+
 
 class MealPlanSerializer(serializers.ModelSerializer):
     # recipe = serializers.StringRelatedField()
@@ -73,7 +85,7 @@ class MealPlanSerializer(serializers.ModelSerializer):
 
 class MealPlanSerializerGET(serializers.ModelSerializer):
     # recipe = RecipeSerializerGET(read_only=True)
-    meals = MealSerializer(read_only=True, many=True)
+    meals = MealSerializerGET(read_only=True, many=True)
 
     class Meta:
         model = MealPlan

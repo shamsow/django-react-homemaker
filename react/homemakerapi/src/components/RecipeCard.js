@@ -4,20 +4,20 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
+// import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
+// import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
+// import FavoriteIcon from '@material-ui/icons/Favorite';
+// import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-// import { useEffect } from 'react';
-
+import EditIcon from '@material-ui/icons/Edit';
+import RecipeForm from './RecipeForm';
+import Chip from '@material-ui/core/Chip';
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -39,52 +39,65 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: red[500],
   },
+  card: {
+    minWidth: '100%',
+  }
   
 }));
 
 export default function RecipeCard(props) {
-	// console.log(props);
+  const { recipe, makeExpanded, editAllowed, refetchData } = props;
+	// console.log(recipe);
   const classes = useStyles();
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(makeExpanded);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-
   return (
-    <Card className={classes.root} key={props.id}>
+    <Card className={classes.card} key={recipe.id}>
       <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            R
-          </Avatar>
-        }
+        // avatar={
+        //   // <Avatar aria-label="recipe" className={classes.avatar}>
+        //   //   R
+        //   // </Avatar>
+        //   editAllowed?
+        //   <RecipeForm title={<EditIcon />} recipe={recipe} refetchData={refetchData}/>
+        //   : ''
+        // }
+        // action={editAllowed?
+        //   <IconButton aria-label="settings" onClick={handleDelete}>
+        //     <EditIcon />
+        //   </IconButton>
+        //   : ''
+        // }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+        editAllowed?
+        <RecipeForm title={<EditIcon />} recipe={recipe} refetchData={refetchData}/>
+        : ''
         }
-        title={props.title}
-        subheader={props.date.toLocaleDateString()}
+        title={recipe.name}
+        subheader={new Date(recipe.created).toUTCString()}
       />
-      <CardMedia
+      {/* <CardMedia
         className={classes.media}
         image="https://source.unsplash.com/random"
         title="Paella dish"
-      />
+      /> */}
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-         {props.description}
+         {recipe.description}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        {recipe.rating && <Chip variant="outlined" color="primary" label={`${recipe.rating}/10`}/>}
+        {/* <IconButton aria-label="add to favorites">
           <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
+        </IconButton> */}
+        {/* <IconButton aria-label="share">
           <ShareIcon />
-        </IconButton>
+        </IconButton> */}
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -95,19 +108,20 @@ export default function RecipeCard(props) {
         >
           <ExpandMoreIcon />
         </IconButton>
+        
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
 		  <Typography paragraph>Ingredients: 
 		  	
-			  {props.ingredients.map((ingredient) => (
+			  {recipe.ingredients.map((ingredient) => (
 				  <Typography variant="caption" display="block" gutterBottom>{ingredient.name}</Typography>
 			  ))}
 
 		  </Typography>
           <Typography paragraph>Method:
 			<Typography variant="caption" display="block" gutterBottom>
-				{props.instructions}
+				{recipe.instructions}
 			</Typography>
 		  </Typography>
         </CardContent>

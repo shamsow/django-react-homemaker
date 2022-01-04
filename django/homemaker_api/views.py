@@ -1,10 +1,14 @@
+from django.db.models.query import QuerySet
 from rest_framework import generics, filters
+from rest_framework import permissions
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from homemaker.models import Ingredient, Recipe, Meal, MealPlan
-from .serializers import (IngredientSerializer, RecipeSerializer,
+from .serializers import (IngredientSerializer, IngredientSerializerRelated, UnitSerializer, RecipeSerializer,
                           MealPlanSerializer, MealSerializer,
                           RecipeSerializerGET,
                           MealPlanSerializerGET)
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Count
 
 
@@ -24,31 +28,44 @@ class PantryList(generics.ListAPIView):
         return Ingredient.objects.filter(user=user).annotate(recipe_count=Count('recipe'))
 
 
+
 class IngredientDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
+    # permission_classes = [AllowAny]
     # queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     # lookup_field     = 'pk'
 
-    # def get_queryset(self):
-    #     """
-    #     This view should return a list of all the purchases
-    #     for the currently authenticated user.
-    #     """
-    #     user = self.request.user
-    #     return Ingredient.objects.filter(user=user)
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        user = self.request.user
+        return Ingredient.objects.filter(user=user).annotate(recipe_count=Count('recipe'))
 
 
 class IngredientCreate(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     queryset = Ingredient.objects.all()
-    serializer_class = IngredientSerializer
+    serializer_class = IngredientSerializerRelated
 
 
 class IngredientDelete(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
+
+
+class UnitList(APIView):
+    permissions_classes = [AllowAny]
+
+    def get(self, request, format=None):
+        """
+        Return a list of all allowed units.
+        """
+        allowed_units = [unit[0] for unit in Ingredient.UNIT_CHOICES]
+        return Response(allowed_units)
 
 # Recipes
 
@@ -70,6 +87,12 @@ class CookbookList(generics.ListAPIView):
         """
         user = self.request.user
         return Recipe.objects.filter(user=user)
+
+
+class RecipeDetailREADONLY(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializerGET
 
 
 class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -98,14 +121,14 @@ class RecipeDetailSLUG(generics.RetrieveUpdateDestroyAPIView):
 
 
 class RecipeCreate(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
 
 
 # MealPlans
 class MealPlanList(generics.ListAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     queryset = MealPlan.objects.all()
     serializer_class = MealPlanSerializerGET
 
@@ -116,9 +139,9 @@ class MealPlanList(generics.ListAPIView):
 
 
 class MealPlanDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
-    queryset = MealPlan.objects.all()
-    serializer_class = MealPlanSerializer
+    # permission_classes = [IsAuthenticated]
+    queryset = Meal.objects.all()
+    serializer_class = MealSerializer
 
 
 class MealPlanQuery(generics.ListCreateAPIView):
