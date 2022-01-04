@@ -65,15 +65,15 @@ function RecipeDialog(props) {
       <Dialog
         open={open}
         onClose={handleClose}
-        // maxWidth={'md'}
-        // fullWidth={true}
+        maxWidth={'md'}
+        fullWidth={true}
         scroll='paper'
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        {/* <DialogTitle id="alert-dialog-title">
           <Typography variant='h3' gutterBottom>{recipe.name}</Typography>
-          </DialogTitle>
+          </DialogTitle> */}
         <DialogContent>
           <RecipeCard recipe={recipe} makeExpanded={true}></RecipeCard>
         </DialogContent>

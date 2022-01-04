@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import IconButton from '@material-ui/core/IconButton';
 // import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -203,9 +204,9 @@ export default function FormDialog(props) {
 
   return (
     <div>
-      <Button color="primary" onClick={handleClickOpen}>
+      <IconButton color="primary" onClick={handleClickOpen}>
         {props.title}
-      </Button>
+      </IconButton>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">{props["meal"]? "Update ": "Create "}Meal</DialogTitle>
         <DialogContent>
