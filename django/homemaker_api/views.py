@@ -121,7 +121,7 @@ class RecipeDetailSLUG(generics.RetrieveUpdateDestroyAPIView):
 
 
 class RecipeCreate(generics.CreateAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
 
@@ -139,7 +139,7 @@ class MealPlanList(generics.ListAPIView):
 
 
 class MealPlanDetail(generics.RetrieveUpdateDestroyAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     queryset = Meal.objects.all()
     serializer_class = MealSerializer
 
