@@ -85,7 +85,7 @@ class Meal(models.Model):
 
 
 class MealPlan(models.Model):
-    date = models.DateField(unique=True)
+    date = models.DateField()
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     # recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
@@ -106,11 +106,11 @@ class MealPlan(models.Model):
 def my_handler(sender, instance, **kwargs):
     # print('post save callback', sender, instance)
     date = instance.date
-    mealplan = MealPlan.objects.filter(date=date)
+    user = instance.user
+    mealplan = MealPlan.objects.filter(date=date, user=user)
     if mealplan.count():
         mealplan[0].meals.add(instance)
     else:
-        new_mealplan = MealPlan(date=instance.date, user=instance.user)
-
+        new_mealplan = MealPlan(date=instance.date, user=user)
         new_mealplan.save()
         new_mealplan.meals.add(instance)
