@@ -143,8 +143,12 @@ const EnhancedTableToolbar = (props) => {
   const [open, setOpen] = React.useState(false);
 	const [message, setMessage] = React.useState("");
 
-
-  // console.log(selected);
+  const handleAlertClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      setOpen(false);
+    }
+    setOpen(false);
+  };
 
   const handleDelete = () => {
     // console.log(selected);
@@ -156,15 +160,9 @@ const EnhancedTableToolbar = (props) => {
           props.refetchData();
         })
         .catch((error) => console.log(error));
-
-
     }
     setOpen(true);
     setMessage(numSelected + " ingredient(s) deleted!");
-    // numSelected = 0;
-    // selected = [];
-
-
   }
 
   return (
@@ -173,7 +171,7 @@ const EnhancedTableToolbar = (props) => {
         [classes.highlight]: numSelected > 0,
       })}
     >
-      <Alert open={open} message={message}/>
+      <Alert open={open} message={message} handleClose={handleAlertClose}/>
       {numSelected > 0 ? (
         <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
           {numSelected} selected

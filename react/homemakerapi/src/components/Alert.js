@@ -22,8 +22,8 @@ const useStyles = makeStyles((theme) => ({
 export default function CustomizedSnackbars(props) {
   const classes = useStyles();
 //   console.log(props);
-  const {open, message} = props;
-  const [openState, setOpen] = React.useState(open);
+  const {open, message, handleClose} = props;
+  // const [openState, setOpen] = React.useState(open);
   // console.log(openState);
 
 
@@ -32,15 +32,17 @@ export default function CustomizedSnackbars(props) {
   //   setOpen(true);
   // };
 
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      // setOpen(false);
-      return;
-    }
+  // const handleClose = (event, reason) => {
+  //   console.log(openState);
+  //   console.log(reason);
+  //   if (reason === 'clickaway') {
+  //     setOpen(false);
+  //     return;
+  //   }
 
-    setOpen(false);
-    // open = false;
-  };
+  //   setOpen(false);
+  //   // open = false;
+  // };
 
   return (
     <div className={classes.root}>
