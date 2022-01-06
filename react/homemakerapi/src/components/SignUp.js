@@ -42,7 +42,14 @@ export default function SignUp() {
 		password: '',
 	});
 
+	const initialErrors = Object.freeze({
+		email: '',
+		username: '',
+		password: '',
+	});
+
 	const [formData, updateFormData] = useState(initialFormData);
+	const [errors, setErrors] = useState(initialErrors)
 
 	const handleChange = (e) => {
 		updateFormData({
@@ -51,6 +58,8 @@ export default function SignUp() {
 			[e.target.name]: e.target.value.trim(),
 		});
 	};
+
+	// const handleError = (e)
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -69,7 +78,14 @@ export default function SignUp() {
 			})
 			.catch((error) => {
 				console.log("Encountered an error.")
-				console.log(error.response.data);
+				// console.log(error.response.data);
+				const errorResponse = error.response.data;
+				const newErrors = {
+					email: errorResponse["email"]? errorResponse["email"][0] : '',
+					username: errorResponse["username"]? errorResponse["username"][0] : '',
+					password: errorResponse["password"]? errorResponse["password"][0] : '',
+				};
+				setErrors(newErrors);
 			});
 	};
 
@@ -95,6 +111,8 @@ export default function SignUp() {
 								name="email"
 								autoComplete="email"
 								onChange={handleChange}
+								error={errors["email"].length? true : false}
+								helperText={errors["email"].length? errors["email"] : ''}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -107,6 +125,8 @@ export default function SignUp() {
 								name="username"
 								autoComplete="username"
 								onChange={handleChange}
+								error={errors["username"].length? true : false}
+								helperText={errors["username"].length? errors["username"] : ''}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -120,6 +140,8 @@ export default function SignUp() {
 								id="password"
 								autoComplete="current-password"
 								onChange={handleChange}
+								error={errors["password"].length? true : false}
+								helperText={errors["password"].length? errors["password"] : ''}
 							/>
 						</Grid>
 						<Grid item xs={12}>

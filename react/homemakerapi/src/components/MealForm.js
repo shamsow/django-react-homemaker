@@ -7,7 +7,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';
-// import DialogContentText from '@material-ui/core/DialogContentText';
+import Tooltip from '@material-ui/core/Tooltip';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem';
 
@@ -54,10 +54,16 @@ const LayoutTextFields = (props) => {
 		user: user
 	});
 
+	const initialErrors = Object.freeze({
+		meal_type: '',
+		date: '',
+		recipe: '',
+	});
+
 	const [formData, updateFormData] = useState(initialFormData);
 	const [mealTypes, updateMealTypes] = useState(initialMealTypes);
 	const [recipeData, setRecipeData] = useState([]);
-	// const [message, setMessage] = useState("");
+	const [errors, setErrors] = useState(initialErrors)
 
 	useEffect(() => {
 		axiosInstance.options("mealplan/meal/create")
@@ -97,7 +103,14 @@ const LayoutTextFields = (props) => {
 			})
 			.catch((error) => {
 				console.log("Encountered an error.")
-				console.log(error.response.data.detail);
+				console.log(error.response.data);
+				const errorResponse = error.response.data;
+				const newErrors = {
+					meal_type: errorResponse["meal_type"]? errorResponse["meal_type"][0] : '',
+					date: errorResponse["date"]? errorResponse["date"][0] : '',
+					recipe: errorResponse["recipe"]? errorResponse["recipe"][0] : '',
+				};
+				setErrors(newErrors);
 				
 			});
 	};
@@ -115,7 +128,14 @@ const LayoutTextFields = (props) => {
 			})
 			.catch((error) => {
 				console.log("Encountered an error.")
-				console.log(error.response.data.detail);
+				console.log(error.response.data);
+				const errorResponse = error.response.data;
+				const newErrors = {
+					meal_type: errorResponse["meal_type"]? errorResponse["meal_type"][0] : '',
+					date: errorResponse["date"]? errorResponse["date"][0] : '',
+					recipe: errorResponse["recipe"]? errorResponse["recipe"][0] : '',
+				};
+				setErrors(newErrors);
 			});
 	};
   
@@ -127,6 +147,7 @@ const LayoutTextFields = (props) => {
 		  	required
 			id="outlined-full-width"
 			label="Date"
+			type='date'
 			style={{ margin: 8 }}
 			defaultValue={meal["date"] ? meal["date"] : ""}
 			fullWidth
@@ -137,6 +158,8 @@ const LayoutTextFields = (props) => {
 			  shrink: true,
 			}}
 			onChange={handleChange}
+			error={errors["date"].length? true : false}
+			helperText={errors["date"].length? errors["date"] : ''}
 		  />
 		  <TextField
 			select
@@ -148,6 +171,8 @@ const LayoutTextFields = (props) => {
 			onChange={handleChange}
 			margin="dense"
 			name="meal_type"
+			error={errors["meal_type"].length? true : false}
+			helperText={errors["meal_type"].length? errors["meal_type"] : ''}
 			// disabled={meal["item-unit"]? true: false}
 			>
 			{mealTypes.map((mealType) => (
@@ -167,6 +192,8 @@ const LayoutTextFields = (props) => {
 				margin="dense"
 				name="recipe"
 				onChange={handleChange}
+				error={errors["recipe"].length? true : false}
+				helperText={errors["recipe"].length? errors["recipe"] : ''}
 			>
 			{recipeData.map((recipe) => (
 				<MenuItem key={recipe["id"]} value={recipe["id"]}>
@@ -203,30 +230,32 @@ export default function FormDialog(props) {
   };
 
   return (
-    <div>
-      <IconButton color="primary" onClick={handleClickOpen}>
-        {props.title}
-      </IconButton>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">{props["meal"]? "Update ": "Create "}Meal</DialogTitle>
-        <DialogContent>
-          {/* <DialogContentText>
-            
-          </DialogContentText> */}
-		  <LayoutTextFields
-		  	meal={props["meal"]}
-		  	user={props["user"]}
+	<div>
+	<Tooltip title={props["meal"]["meal_type"]? "Edit Meal": "Create Meal"}>
+	<IconButton color="primary" onClick={handleClickOpen}>
+		{props.title}
+	</IconButton>
+	</Tooltip>
+	<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+		<DialogTitle id="form-dialog-title">{props["meal"]["meal_type"]? "Update ": "Create "}Meal</DialogTitle>
+		<DialogContent>
+		{/* <DialogContentText>
+			
+		</DialogContentText> */}
+		<LayoutTextFields
+			meal={props["meal"]}
+			user={props["user"]}
 
 			refetchData={props["refetchData"]}
 			closeForm={handleClose}
-		  />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+		/>
+		</DialogContent>
+		<DialogActions>
+		<Button onClick={handleClose} color="primary">
+			Close
+		</Button>
+		</DialogActions>
+	</Dialog>
+	</div>
   );
 }
