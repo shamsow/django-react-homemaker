@@ -130,7 +130,7 @@ const LayoutTextFields = (props) => {
 			})
 			.catch((error) => {
 				console.log("Encountered an error.")
-				// console.log(error.response.data);
+				console.log(error.response.data);
 				const errorResponse = error.response.data;
 				const newErrors = {
 					name: errorResponse["name"]? errorResponse["name"][0] : '',
