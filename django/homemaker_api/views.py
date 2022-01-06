@@ -132,10 +132,10 @@ class MealPlanList(generics.ListAPIView):
     queryset = MealPlan.objects.all()
     serializer_class = MealPlanSerializerGET
 
-    # def get_queryset(self):
-    #     # slug = self.kwargs['slug']
-    #     user = self.request.user
-    #     return MealPlan.objects.filter(user=user)
+    def get_queryset(self):
+        # slug = self.kwargs['slug']
+        user = self.request.user
+        return MealPlan.objects.filter(user=user)
 
 
 class MealPlanDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -154,6 +154,10 @@ class MealPlanQuery(generics.ListCreateAPIView):
         user = self.request.user
         return MealPlan.objects.filter(date=q_date, user=user)
 
+class MealPlanDelete(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = MealPlan.objects.all()
+    serializer_class = MealPlanSerializer
 
 class MealCreate(generics.CreateAPIView):
     queryset = Meal.objects.all()

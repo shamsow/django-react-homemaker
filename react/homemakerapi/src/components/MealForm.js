@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -220,6 +221,7 @@ const LayoutTextFields = (props) => {
 export default function FormDialog(props) {
   const [open, setOpen] = React.useState(false);
 //   console.log(props);
+	const refetchData = props["refetchData"];
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -229,6 +231,23 @@ export default function FormDialog(props) {
     setOpen(false);
   };
 
+  const handleDelete = (e) => {
+	const endPoint = props["mealID"]? `mealplan/${props["mealID"]}` : `mealplan/meal/${props["meal"]["id"]}`;
+
+	console.log(`Deleting ${endPoint}`);
+
+	axiosInstance
+		.delete(endPoint)
+		.then((res) => {
+			console.log("Succesfully deleted!");
+			refetchData();
+		})
+		.catch((error) => {
+			console.log("Encountered an error.")
+			console.log(error.response.data);
+		});
+  }
+
   return (
 	<div>
 	<Tooltip title={props["meal"]["meal_type"]? "Edit Meal": "Create Meal"}>
@@ -236,6 +255,13 @@ export default function FormDialog(props) {
 		{props.title}
 	</IconButton>
 	</Tooltip>
+	{(props["meal"]["meal_type"] || props["mealID"]) &&
+	<Tooltip title={"Delete meal"}>
+	<IconButton color="secondary" onClick={handleDelete}>
+		<DeleteIcon/>
+	</IconButton>
+	</Tooltip>
+	}
 	<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
 		<DialogTitle id="form-dialog-title">{props["meal"]["meal_type"]? "Update ": "Create "}Meal</DialogTitle>
 		<DialogContent>
