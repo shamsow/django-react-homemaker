@@ -329,7 +329,8 @@ export default function EnhancedTable() {
           selected={selected} 
           refetchData={refetchData} 
           resetSelected={resetSelected}
-          user={data[0]["user"]}/>
+          user={data[0] ? data[0]["user"] : ""}
+          />
         <TableContainer>
           <Table
             className={classes.table}

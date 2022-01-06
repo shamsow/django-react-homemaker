@@ -114,6 +114,7 @@ function Row(props) {
             meal={{date: row.date}}
             user={row.user}
             refetchData={refetchData}
+            mealID={row.id}
           >
           </MealForm>
         </TableCell>

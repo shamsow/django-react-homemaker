@@ -4,7 +4,7 @@ from datetime import datetime
 from .views import (PantryList, CookbookList, IngredientDetail,
                     IngredientCreate, IngredientDelete, RecipeDetailREADONLY, UnitList, RecipeDetail,
                     RecipeDetailSLUG, RecipeCreate, MealPlanList,
-                    MealPlanQuery, MealPlanDetail, MealCreate)
+                    MealPlanQuery, MealPlanDetail, MealPlanDelete, MealCreate)
 
 
 class DateConverter:
@@ -34,6 +34,7 @@ urlpatterns = [
     path('cookbook/recipe/<slug:slug>', RecipeDetailSLUG.as_view(), name='recipe-detail'),
     path('mealplan/all', MealPlanList.as_view(), name='mealplan-list'),
     path('mealplan/<yyyy:date>', MealPlanQuery.as_view(), name='mealplan-query'),
+    path('mealplan/<int:pk>', MealPlanDelete.as_view(), name='mealplan-delete'),
     path('mealplan/meal/<int:pk>', MealPlanDetail.as_view(), name='mealplan-detail'),
     path('mealplan/meal/create', MealCreate.as_view(), name='meal-create')
 ]
