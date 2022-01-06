@@ -8,6 +8,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import IngredientForm from './IngredientForm';
 
 
@@ -36,7 +37,15 @@ const LayoutTextFields = (props) => {
 		user: recipe["user"] ? recipe["user"] : user,
 	});
 
+	const initialErrors = Object.freeze({
+		name: '',
+		description: '',
+		instructions: '',
+		rating: '',
+	});
+
 	const [formData, updateFormData] = useState(initialFormData);
+	const [errors, setErrors] = useState(initialErrors)
 
 	const nameRef = useRef(recipe["name"] ? recipe["name"] : '');
 	const ratingRef = useRef(recipe["rating"] ? recipe["rating"] : '');
@@ -75,7 +84,15 @@ const LayoutTextFields = (props) => {
 			})
 			.catch((error) => {
 				console.log("Encountered an error.")
-				console.log(error.response.data.detail);
+				console.log(error.response.data);
+				const errorResponse = error.response.data;
+				const newErrors = {
+					name: errorResponse["name"]? errorResponse["name"][0] : '',
+					description: errorResponse["description"]? errorResponse["description"][0] : '',
+					instructions: errorResponse["instructions"]? errorResponse["instructions"][0] : '',
+					rating: errorResponse["rating"]? errorResponse["rating"][0] : '',
+				};
+				setErrors(newErrors);
 			});
 	};
 
@@ -101,7 +118,15 @@ const LayoutTextFields = (props) => {
 			})
 			.catch((error) => {
 				console.log("Encountered an error.")
-				console.log(error.response.data.detail);
+				console.log(error.response.data);
+				const errorResponse = error.response.data;
+				const newErrors = {
+					name: errorResponse["name"]? errorResponse["name"][0] : '',
+					description: errorResponse["description"]? errorResponse["description"][0] : '',
+					instructions: errorResponse["instructions"]? errorResponse["instructions"][0] : '',
+					rating: errorResponse["rating"]? errorResponse["rating"][0] : '',
+				};
+				setErrors(newErrors);
 			});
 	};
 	const handleDelete = (e) => {
@@ -135,20 +160,25 @@ const LayoutTextFields = (props) => {
 				defaultValue={recipe["name"] ? recipe["name"] : ""}
 				margin="normal"
 				name="name"
-				helperText="Name of the recipe (Ex: Grandma's Egg Friend Rice)"
+				error={errors["name"].length? true : false}
+				helperText={errors["name"].length? errors["name"] : "Name of the recipe (Ex: Grandma's Egg Friend Rice)"}
+				// helperText="Name of the recipe (Ex: Grandma's Egg Friend Rice)"
 				InputLabelProps={{
 				shrink: true,
 				}}
+
 			/>
 			<TextField
 				inputRef={ratingRef}
 				id="outlined-full-width"
+				type='number'
 				label="Rating"
 				style={{ margin: 8 }}
 				defaultValue={recipe["rating"] ? recipe["rating"] : ""}
 				margin="normal"
 				name="rating"
-				helperText="Optional [1 - 10]"
+				error={errors["rating"].length? true : false}
+				helperText={errors["rating"].length? errors["rating"] : "Optional (1 - 10)"}
 			/>
 			<TextField
 				required
@@ -158,9 +188,10 @@ const LayoutTextFields = (props) => {
 				style={{ margin: 8 }}
 				label="Description"
 				name="description"
-				helperText="Short description of the dish"
 				defaultValue={recipe["description"] ? recipe["description"] : ""}
 				margin="normal"
+				error={errors["description"].length? true : false}
+				helperText={errors["description"].length? errors["description"] : "Short description of the dish"}
 			/>
 			<TextField
 				required
@@ -169,10 +200,11 @@ const LayoutTextFields = (props) => {
 				inputRef={instructionsRef}
 				style={{ margin: 8 }}
 				label="Instructions"
-				helperText="Succinct instructions on how to make the recipe."
 				defaultValue={recipe["instructions"] ? recipe["instructions"] : ""}
 				margin="normal"
 				name="instructions"
+				error={errors["instructions"].length? true : false}
+				helperText={errors["instructions"].length? errors["instructions"] : "Succinct instructions on how to make the recipe."}
 			>
 			</TextField>
 			<IngredientForm 
@@ -223,30 +255,32 @@ export default function FormDialog(props) {
   };
 
   return (
-    <div>
-      <IconButton color="primary" onClick={handleClickOpen}>
-        {props.title}
-      </IconButton>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">{props["recipe"]? "Update ": "Create "}Recipe</DialogTitle>
-        <DialogContent>
-          {/* <DialogContentText>
-            
-          </DialogContentText> */}
-		  <LayoutTextFields
-		  	recipe={props["recipe"]}
-		  	user={props["user"]}
+	<div>
+	<Tooltip title={props["recipe"]["name"]? "Edit Recipe": "Create Recipe"}>
+		<IconButton color="primary" onClick={handleClickOpen}>
+			{props.title}
+		</IconButton>
+	</Tooltip>
+	<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+		<DialogTitle id="form-dialog-title">{props["recipe"]["name"]? "Update ": "Create "}Recipe</DialogTitle>
+		<DialogContent>
+		{/* <DialogContentText>
+			
+		</DialogContentText> */}
+		<LayoutTextFields
+			recipe={props["recipe"]}
+			user={props["user"]}
 
 			refetchData={props["refetchData"]}
 			closeForm={handleClose}
-		  />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+		/>
+		</DialogContent>
+		<DialogActions>
+		<Button onClick={handleClose} color="primary">
+			Close
+		</Button>
+		</DialogActions>
+	</Dialog>
+	</div>
   );
 }

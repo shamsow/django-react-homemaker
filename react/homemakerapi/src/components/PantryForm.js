@@ -6,7 +6,8 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem';
 
@@ -43,8 +44,16 @@ const LayoutTextFields = (props) => {
 		unit: props["item-unit"] ? props["item-unit"] : '',
 	});
 
+	const initialErrors = Object.freeze({
+		name: '',
+		unit: '',
+		amount: '',
+	});
+
+
 	const [formData, updateFormData] = useState(initialFormData);
 	const [units, updateUnits] = useState(initialUnits);
+	const [errors, setErrors] = useState(initialErrors)
 
 	useEffect(() => {
 		axiosInstance.get("pantry/units")
@@ -86,7 +95,14 @@ const LayoutTextFields = (props) => {
 			})
 			.catch((error) => {
 				console.log("Encountered an error.")
-				console.log(error.response.data.detail);
+				// console.log(error.response.data.detail);
+				const errorResponse = error.response.data;
+				const newErrors = {
+					name: errorResponse["name"]? errorResponse["name"][0] : '',
+					unit: errorResponse["unit"]? errorResponse["unit"][0] : '',
+					amount: errorResponse["amount"]? errorResponse["amount"][0] : '',
+				};
+				setErrors(newErrors);
 				
 			});
 
@@ -114,8 +130,15 @@ const LayoutTextFields = (props) => {
 			})
 			.catch((error) => {
 				console.log("Encountered an error.")
-				console.log(error.response.data.detail);
-				
+				// console.log(error.response.data);
+				const errorResponse = error.response.data;
+				const newErrors = {
+					name: errorResponse["name"]? errorResponse["name"][0] : '',
+					unit: errorResponse["unit"]? errorResponse["unit"][0] : '',
+					amount: errorResponse["amount"]? errorResponse["amount"][0] : '',
+				};
+				setErrors(newErrors);
+				// console.log(errors);				
 			});
 
 	};
@@ -137,6 +160,8 @@ const LayoutTextFields = (props) => {
 			  shrink: true,
 			}}
 			onChange={handleChange}
+			error={errors["name"].length? true : false}
+			helperText={errors["name"].length? errors["name"] : ''}
 		  />
 		  <TextField
 			select
@@ -149,6 +174,8 @@ const LayoutTextFields = (props) => {
 			helperText="Limited to certain units"
 			margin="dense"
 			name="unit"
+			error={errors["name"].length? true : false}
+			helperText={errors["name"].length? errors["name"] : ''}
 			// disabled={props["item-unit"]? true: false}
 			>
 			{units.map((unit) => (
@@ -167,6 +194,8 @@ const LayoutTextFields = (props) => {
 				margin="dense"
 				name="amount"
 				onChange={handleChange}
+				error={errors["amount"].length? true : false}
+				helperText={errors["amount"].length? errors["amount"] : ''}
 			/>
 		  <Button
 			type="submit"
@@ -198,31 +227,33 @@ export default function FormDialog(props) {
 
   return (
     <div>
-      <Button color="primary" onClick={handleClickOpen}>
-        {props.title}
-      </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">{props["item-name"]? "Update ": "Create "}Ingredient</DialogTitle>
-        <DialogContent>
-          {/* <DialogContentText>
-            
-          </DialogContentText> */}
-		  <LayoutTextFields
-		  	user={props["user"]}
-		  	item-id={props["item-id"]}
-		  	item-name={props["item-name"]}
+	<Tooltip title={props["item-name"]? "Edit Ingredient": "Create Ingredient"}>
+	<IconButton color="primary" onClick={handleClickOpen}>
+		{props.title}
+	</IconButton>
+	</Tooltip>
+	<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+		<DialogTitle id="form-dialog-title">{props["item-name"]? "Update ": "Create "}Ingredient</DialogTitle>
+		<DialogContent>
+		{/* <DialogContentText>
+			
+		</DialogContentText> */}
+		<LayoutTextFields
+			user={props["user"]}
+			item-id={props["item-id"]}
+			item-name={props["item-name"]}
 			item-amount={props["item-amount"]}
 			item-unit={props["item-unit"]}
 			refetchData={props["refetchData"]}
 			closeForm={handleClose}
-		  />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
+		/>
+		</DialogContent>
+		<DialogActions>
+		<Button onClick={handleClose} color="primary">
+			Close
+		</Button>
+		</DialogActions>
+	</Dialog>
     </div>
   );
 }

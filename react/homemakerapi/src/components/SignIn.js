@@ -46,8 +46,16 @@ export default function SignIn() {
 	const [formData, updateFormData] = useState(initialFormData);
 	const [open, setOpen] = useState(false);
 	const [message, setMessage] = useState("");
+	const [error, setError] = useState(false);
 	// const [emailInvalid, updateEmail] = useState(false);
 	// const [pwdInvalid, updatePwd] = useState(false);
+
+	const handleAlertClose = (event, reason) => {
+		if (reason === 'clickaway') {
+		  setOpen(false);
+		}
+		setOpen(false);
+	};
 
 	const handleChange = (e) => {
 		updateFormData({
@@ -75,6 +83,7 @@ export default function SignIn() {
 				//console.log(res.data);
 			})
 			.catch((error) => {
+				setError(true);
 				console.log("Encountered an error.")
 				console.log(error.response.data.detail);
 				setOpen(true);
@@ -89,7 +98,7 @@ export default function SignIn() {
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
-			<Alert open={open} message={message}/>
+			<Alert open={open} message={message} handleClose={handleAlertClose}/>
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}></Avatar>
 				<Typography component="h1" variant="h5">
@@ -107,9 +116,10 @@ export default function SignIn() {
 						autoComplete="email"
 						autoFocus
 						onChange={handleChange}
-						// error={emailInvalid}
+						error={error}
 					/>
 					<TextField
+						error={error}
 						variant="outlined"
 						margin="normal"
 						required
@@ -120,12 +130,11 @@ export default function SignIn() {
 						id="password"
 						autoComplete="current-password"
 						onChange={handleChange}
-						// error={pwdInvalid}
 					/>
-					<FormControlLabel
+					{/* <FormControlLabel
 						control={<Checkbox value="remember" color="primary" />}
 						label="Remember me"
-					/>
+					/> */}
 					<Button
 						type="submit"
 						fullWidth

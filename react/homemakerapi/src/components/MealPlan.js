@@ -40,6 +40,10 @@ const useRowStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(10),
     margin: theme.spacing(1),
   },
+  container: {
+    overflowY: 'scroll',
+    height: '85vh',
+  },
   title: {
     flex: '1 1 100%',
     marginLeft: theme.spacing(90), // !!! TODO : FIX THIS GARBAGE
@@ -183,7 +187,7 @@ export default function CollapsibleTable() {
   };
 
   return (
-    <TableContainer component={Paper} className={classes.appBarSeparator}>
+    <TableContainer component={Paper} className={`${classes.appBarSeparator} ${classes.container}`}>
       <Toolbar>
         <Typography className={classes.title} variant="h6" id="tableTitle" component="div" gutterBottom>
             Meal Plans
