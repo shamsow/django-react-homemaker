@@ -10,6 +10,18 @@ from .serializers import (IngredientSerializer, IngredientSerializerRelated, Uni
                           MealPlanSerializerGET)
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Count
+from rest_framework_simplejwt.views import TokenViewBase
+from .serializers import MyTokenObtainPairSerializer
+
+# Custom Token view to include user data along with tokens
+class MyTokenObtainPairView(TokenViewBase):
+    """
+    Takes a set of user credentials and returns an access and refresh JSON web
+    token pair to prove the authentication of those credentials, 
+    along with user id, username and email.
+    """
+
+    serializer_class = MyTokenObtainPairSerializer
 
 
 # Ingredients
@@ -162,3 +174,28 @@ class MealPlanDelete(generics.DestroyAPIView):
 class MealCreate(generics.CreateAPIView):
     queryset = Meal.objects.all()
     serializer_class = MealSerializer
+
+
+
+
+
+# from rest_framework_simplejwt.tokens import RefreshToken
+
+
+# def get_tokens_for_user(user):
+#     refresh = RefreshToken.for_user(user)
+
+#     return {
+#         'refresh': str(refresh),
+#         'access': str(refresh.access_token),
+#         'user': user
+#     }
+
+# # in views.py
+# def login(request):
+#     ...
+#     user = authenticate(email=email, password=password)
+#     if user is not None:
+#         user_id = User.objects.get(email=email)
+#         data = get_tokens_for_user(user_id)
+#         return Response(data, status=HTTP_200_OK)

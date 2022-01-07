@@ -1,5 +1,30 @@
 from rest_framework import serializers
 from homemaker.models import Ingredient, Recipe, Meal, MealPlan
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenObtainSerializer
+from rest_framework_simplejwt.settings import api_settings
+from django.contrib.auth.models import update_last_login
+
+# Custom Serializer for login endpoint to get user data upon login
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super(TokenObtainPairSerializer, self).validate(attrs)
+
+        refresh = super().get_token(self.user)
+
+        user_data = {
+            "id": self.user.id,
+            "username": self.user.user_name,
+            "email": self.user.email
+        }
+
+        data["refresh"] = str(refresh)
+        data["access"] = str(refresh.access_token)
+        data["user"] = user_data
+
+        if api_settings.UPDATE_LAST_LOGIN:
+            update_last_login(None, self.user)
+
+        return data
 
 
 class IngredientSerializer(serializers.ModelSerializer):
