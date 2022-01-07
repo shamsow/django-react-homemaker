@@ -244,7 +244,7 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [data, setData] = React.useState([{"user": null}]);
+  const [data, setData] = React.useState([{}]);
   const [refetchSwitch, triggerSwitch] = React.useState(false);
 
 
@@ -260,7 +260,7 @@ export default function EnhancedTable() {
   }, [refetchSwitch]);
 
   const refetchData = () => {
-    console.log("Refetching data");
+    // console.log("Refetching data");
     triggerSwitch(!refetchSwitch);
   };
 
@@ -329,7 +329,7 @@ export default function EnhancedTable() {
           selected={selected} 
           refetchData={refetchData} 
           resetSelected={resetSelected}
-          user={data[0] ? data[0]["user"] : ""}
+          user={localStorage.getItem('user_id')}
           />
         <TableContainer>
           <Table

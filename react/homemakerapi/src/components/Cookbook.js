@@ -51,7 +51,7 @@ export default function Cookbook() {
 		}, [refetchSwitch]);
 
 	const refetchData = () => {
-		console.log("Refetching data");
+		// console.log("Refetching data");
 		triggerSwitch(!refetchSwitch);
 	};
 		
@@ -64,7 +64,7 @@ export default function Cookbook() {
 			<RecipeForm 
 				title={<AddIcon />}
 				recipe={{}}
-				user={data[0]? data[0].user : ''}
+				user={localStorage.getItem('user_id')}
 				refetchData={refetchData}
 			/>
 			
