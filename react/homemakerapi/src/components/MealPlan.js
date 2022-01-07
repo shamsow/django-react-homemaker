@@ -183,7 +183,7 @@ export default function CollapsibleTable() {
   }, [refetchSwitch])
   
   const refetchData = () => {
-    console.log("Refetching data");
+    // console.log("Refetching data");
     triggerSwitch(!refetchSwitch);
   };
 
@@ -196,7 +196,7 @@ export default function CollapsibleTable() {
         <MealForm
           title={<AddIcon/>}
           meal={{}}
-          user={data[0] ? data[0]["user"] : ""}
+          user={localStorage.getItem('user_id')}
           refetchData={refetchData}
           >
         </MealForm>

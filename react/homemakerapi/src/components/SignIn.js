@@ -66,7 +66,7 @@ export default function SignIn() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(formData);
+		// console.log(formData);
 
 		axiosInstance
 			.post(`token/`, {
@@ -74,13 +74,13 @@ export default function SignIn() {
 				password: formData.password,
 			})
 			.then((res) => {
+				// console.log(res.data);
 				localStorage.setItem('access_token', res.data.access);
 				localStorage.setItem('refresh_token', res.data.refresh);
+				localStorage.setItem('user_id', res.data.user.id)
 				axiosInstance.defaults.headers['Authorization'] =
 					'JWT ' + localStorage.getItem('access_token');
 				history.push('/');
-				//console.log(res);
-				//console.log(res.data);
 			})
 			.catch((error) => {
 				setError(true);
@@ -88,8 +88,6 @@ export default function SignIn() {
 				console.log(error.response.data.detail);
 				setOpen(true);
 				setMessage(error.response.data.detail);
-				// if(error.response.data.detail) updateEmail({emailInvalid: true});
-				// else if (response.data.password)
 			});
 	};
 
