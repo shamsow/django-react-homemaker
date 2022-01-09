@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useEffect, useState} from 'react';
 import clsx from 'clsx';
 import { Link, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,7 +17,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
-import { useEffect } from 'react';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import CreateIcon from '@material-ui/icons/Create';
+import SaveAltIcon from '@material-ui/icons/SaveAlt';
+// import { useEffect } from 'react';
 
 
 function Copyright() {
@@ -62,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
 	// background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-	background: 'linear-gradient(to bottom, #131385, #003090, #004496, #005596, #0d6594)',
+	  background: 'linear-gradient(to bottom, #2d3b8b, #32429c, #3849ac, #3d51be, #4358cf);',
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -136,9 +139,9 @@ export default function Nav(props) {
   const location = useLocation();
   // console.log(location.pathname);
 
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
   // const isAuthed = props.isAuthed;
-  const [authStatus, updateAuth] = React.useState(isAuthed());
+  const [authStatus, updateAuth] = useState(isAuthed());
   // console.log(authStatus);
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -171,21 +174,26 @@ export default function Nav(props) {
             ? <Button
                 to="/logout"
                 component={Link}
-                variant="contained" color="primary" >
-                
+                variant="contained" color="primary" 
+                startIcon={<ExitToAppIcon/>}
+                >
                 Logout
               </Button>
             : <div>
               <Button
                 to="/register"
                 component={Link} 
-                variant="contained" color="primary">
+                variant="contained" color="primary"
+                startIcon={<CreateIcon/>}
+                >
                 Sign Up
               </Button>
               <Button
                 to="/login"
                 component={Link}
-                variant="contained" color="primary" className={classes.authButton}>
+                variant="contained" color="primary" className={classes.authButton}
+                startIcon={<SaveAltIcon/>}
+                >
                 Login
               </Button> 
               </div> }

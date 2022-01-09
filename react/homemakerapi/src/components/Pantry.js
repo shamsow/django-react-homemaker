@@ -4,6 +4,11 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Alert from './Alert';
 import PantryForm from './PantryForm';
+import formatRelative from 'date-fns/formatRelative';
+import parseISO from 'date-fns/parseISO';
+import formatDistance from 'date-fns/formatDistance';
+import isDate from 'date-fns/isDate';
+
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
@@ -27,6 +32,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 // import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
+// import AddCircle from '@material-ui/icons/AddCircle';
+import Fade from '@material-ui/core/Fade';
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -61,6 +69,7 @@ const headCells = [
   { id: 'recipes', numeric: true, disablePadding: false, label: 'Recipe Count' },
   { id: 'created', numeric: false, disablePadding: true, label: 'Date Created' },
   { id: 'modified', numeric: false, disablePadding: true, label: 'Date Modified' },
+  { id: 'spacer', numeric: false, disablePadding: true, label: '' },
 ];
 
 
@@ -120,7 +129,7 @@ EnhancedTableHead.propTypes = {
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
+    paddingRight: theme.spacing(4),
   },
   highlight:
     theme.palette.type === 'light'
@@ -177,14 +186,14 @@ const EnhancedTableToolbar = (props) => {
           {numSelected} selected
         </Typography>
       ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+        <Typography className={classes.title} variant="h5" id="tableTitle" component="div">
           Pantry
         </Typography>
       )}
 
       {numSelected > 0 ? (
         <Tooltip title="Delete" onClick={handleDelete}>
-          <IconButton aria-label="delete">
+          <IconButton color='secondary' aria-label="delete">
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -246,6 +255,8 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [data, setData] = React.useState([{}]);
   const [refetchSwitch, triggerSwitch] = React.useState(false);
+  const [loaded, setLoaded] = React.useState(false);
+
 
 
 
@@ -255,6 +266,7 @@ export default function EnhancedTable() {
       // console.log(response.data);
       // console.log("Made a request for ingredients");
       setData(response.data);
+      setLoaded(true);
     })
       .catch((error) => console.log(error));
   }, [refetchSwitch]);
@@ -322,6 +334,7 @@ export default function EnhancedTable() {
 
   return (
     // <div className={classes.root, classes.appBarSeparator}>
+    <Fade in={loaded}>
       <Grid item xs={12} className={classes.root, classes.appBarSeparator}>
       <Paper className={classes.paper}>
         <EnhancedTableToolbar 
@@ -377,9 +390,9 @@ export default function EnhancedTable() {
                       <TableCell>{row.amount}</TableCell>
                       <TableCell>{row.unit}</TableCell>
                       <TableCell>{row.recipe_count}</TableCell>
-                      <TableCell>{new Date(row.created).toUTCString()}</TableCell>
-                      <TableCell>{new Date(row.modified).toUTCString()}</TableCell>
-                      <TableCell>
+                      <TableCell>{row.created && formatRelative(parseISO(row.created), new Date())}</TableCell>
+                      <TableCell>{row.modified && formatDistance(parseISO(row.modified), new Date(), {addSuffix: true})}</TableCell>
+                      <TableCell align="center">
                         <PantryForm 
                           title={<EditIcon/>}
                           user={row.user}
@@ -413,10 +426,10 @@ export default function EnhancedTable() {
         />
       </Paper>
       <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
+        control={<Switch checked={dense} color="primary" onChange={handleChangeDense} />}
         label="Dense padding"
       />
       </Grid>
-    // </div>
+      </Fade>
   );
 }

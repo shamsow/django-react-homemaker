@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem';
+import EditIcon from '@material-ui/icons/Edit';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -203,6 +204,8 @@ const LayoutTextFields = (props) => {
 			variant="contained"
 			color="primary"
 			onClick={props["item-name"]? handleUpdate: handleCreate}
+			startIcon={<EditIcon/>}
+			style={{marginTop: 12}}
 			>
 				{props["item-name"]? "Update": "Create"}
 			</Button>

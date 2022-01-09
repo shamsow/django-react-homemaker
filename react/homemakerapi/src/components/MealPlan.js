@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../axios';
+
+import format from 'date-fns/format';
+import formatRelative from 'date-fns/formatRelative';
+import parseISO from 'date-fns/parseISO';
+import formatDistance from 'date-fns/formatDistance';
+
 // import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -20,14 +26,15 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Dialog from '@material-ui/core/Dialog';
 // import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+// import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogTitle from '@material-ui/core/DialogTitle';
 import Chip from '@material-ui/core/Chip';
 // import Divider from '@material-ui/core/Divider';
 import RecipeCard from './RecipeCard';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import MealForm from './MealForm';
+import Fade from '@material-ui/core/Fade';
 
 
 const useRowStyles = makeStyles((theme) => ({
@@ -44,9 +51,14 @@ const useRowStyles = makeStyles((theme) => ({
     overflowY: 'scroll',
     height: '85vh',
   },
-  title: {
-    flex: '1 1 100%',
-    marginLeft: theme.spacing(90), // !!! TODO : FIX THIS GARBAGE
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignContent: 'center'
+
+  },
+  spacer: {
+    visibility: 'hidden',
   },
 }));
 
@@ -102,11 +114,12 @@ function Row(props) {
         </TableCell>
         <TableCell component="th" scope="row" align="center">
           <Typography variant="button" gutterBottom component="div">
-            {row.date}
+            {/* {row.date} */}
+            {format(parseISO(row.date), 'd-MMM-y (E)')}
           </Typography>
         </TableCell>
-        <TableCell align="center">{new Date(row.created).toUTCString()}</TableCell>
-        <TableCell align="center">{new Date(row.modified).toUTCString()}</TableCell>
+        <TableCell align="center">{formatRelative(parseISO(row.created), new Date())}</TableCell>
+        <TableCell align="center">{formatDistance(parseISO(row.modified), new Date(), {addSuffix: true})}</TableCell>
         <TableCell align="center">{Object.keys(row.meals).length}</TableCell>
         <TableCell align="center">
           <MealForm 
@@ -143,10 +156,8 @@ function Row(props) {
                         {mealRow.meal_type}
                       </TableCell>
                       <TableCell><RecipeDialog recipe={mealRow.recipe}/></TableCell>
-                      <TableCell align="center">{new Date(mealRow.created).toUTCString()}</TableCell>
-                      <TableCell align="center">
-                        {new Date(mealRow.modified).toUTCString()}
-                      </TableCell>
+                      <TableCell align="center">{mealRow.created && formatRelative(parseISO(mealRow.created), new Date())}</TableCell>
+                      <TableCell align="center">{mealRow.modified && formatDistance(parseISO(mealRow.modified), new Date(), {addSuffix: true})}</TableCell>
                       <TableCell align="center">
                         <MealForm 
                         title={<EditIcon/>} 
@@ -171,12 +182,14 @@ function Row(props) {
 export default function CollapsibleTable() {
   const classes = useRowStyles();
   const [data, setData] = useState([]);
+  const [loaded, setLoaded] = React.useState(false);
   const [refetchSwitch, triggerSwitch] = useState(false);
 
   useEffect(() => {
     axiosInstance.get(`mealplan/all`)
       .then((response) => {
         setData(response.data);
+        setLoaded(true);
         // console.log(data)
       })
       .catch((error) => console.log(error));
@@ -188,11 +201,16 @@ export default function CollapsibleTable() {
   };
 
   return (
+    <>
+    {/* <Title>Meal Plans</Title> */}
+    <Fade in={loaded}>
     <TableContainer component={Paper} className={`${classes.appBarSeparator} ${classes.container}`}>
-      <Toolbar>
-        <Typography className={classes.title} variant="h6" id="tableTitle" component="div" gutterBottom>
+      <Toolbar className={classes.header}>
+        <div className={classes.spacer}>spacer</div>
+        <Typography variant="h5" id="tableTitle" component="div" gutterBottom>
             Meal Plans
         </Typography>
+
         <MealForm
           title={<AddIcon/>}
           meal={{}}
@@ -220,5 +238,7 @@ export default function CollapsibleTable() {
         </TableBody>
       </Table>
     </TableContainer>
+    </Fade>
+    </>
   );
 }
