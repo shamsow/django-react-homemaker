@@ -231,7 +231,7 @@ const LayoutTextFields = (props) => {
 				</Button>
 			</Grid>
 			}
-			<Grid item xs={6}>
+			<Grid item xs={recipe["name"]? 6 : 12}>
 				<Button
 					type="submit"
 					fullWidth
