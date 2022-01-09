@@ -54,7 +54,7 @@ export default function TransferList(props) {
 	}, []);
 
 	const handleToggle = (value) => () => {
-		const currentIndex = checked.indexOf(value);
+		const currentIndex = checked.findIndex(x => x.id == value.id);
 		const newChecked = [...checked];
 
 		if (currentIndex === -1) {
