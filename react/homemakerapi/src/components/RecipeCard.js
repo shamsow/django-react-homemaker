@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import axiosInstance from '../axios';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import parseISO from 'date-fns/parseISO';
+import format from 'date-fns/format'
+import isAfter from 'date-fns/isAfter'
+
+import Paper  from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
+import Chip from '@material-ui/core/Chip';
 import CardHeader from '@material-ui/core/CardHeader';
-// import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
-// import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
-// import FavoriteIcon from '@material-ui/icons/Favorite';
-// import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EditIcon from '@material-ui/icons/Edit';
 import RecipeForm from './RecipeForm';
-import Chip from '@material-ui/core/Chip';
+// import Chip from '@material-ui/core/Chip';
+import { formatRelative } from 'date-fns';
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -54,6 +57,11 @@ export default function RecipeCard(props) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  const createdDate = parseISO(recipe.created);
+  const modifiedDate = parseISO(recipe.modified);
+  const dateString = isAfter(modifiedDate, createdDate) 
+                      ? `${format(createdDate, 'PPPPpp')} (edited ${formatRelative(modifiedDate, new Date(), {addSuffix: true})})`
+                      : `${format(createdDate, 'PPPPpp')}`
 
   return (
     <Card className={classes.card} key={recipe.id}>
@@ -78,7 +86,7 @@ export default function RecipeCard(props) {
         : ''
         }
         title={recipe.name}
-        subheader={new Date(recipe.created).toUTCString()}
+        subheader={dateString}
       />
       {/* <CardMedia
         className={classes.media}
@@ -111,19 +119,24 @@ export default function RecipeCard(props) {
         
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-		  <Typography paragraph>Ingredients: 
-		  	
+      <CardContent>
+		  <Typography paragraph>Ingredients 
+		  	<Grid container spacing={1}>
 			  {recipe.ingredients.map((ingredient) => (
-				  <Typography variant="caption" display="block" gutterBottom>{ingredient.name}</Typography>
+          <Grid item>
+				  {/* <Typography variant="caption" display="block" gutterBottom>{ingredient.name}</Typography> */}
+          <Chip label={ingredient.name} variant="outlined" size="small"></Chip>
+          </Grid>
 			  ))}
-
-		  </Typography>
-          <Typography paragraph>Method:
-			<Typography variant="caption" display="block" gutterBottom>
-				{recipe.instructions}
-			</Typography>
-		  </Typography>
+        </Grid>
+        </Typography>
+        <Paper variant="outlined" style={{padding: 10}}>
+        <Typography paragraph>Method
+        <Typography variant="caption" display="block" gutterBottom>
+          {recipe.instructions}
+        </Typography>
+        </Typography>
+        </Paper>
         </CardContent>
       </Collapse>
     </Card>

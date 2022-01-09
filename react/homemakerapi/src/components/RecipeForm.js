@@ -8,9 +8,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import Tooltip from '@material-ui/core/Tooltip';
 import IngredientForm from './IngredientForm';
-
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -211,30 +213,39 @@ const LayoutTextFields = (props) => {
 				ingredients={recipe["ingredients"] ? recipe["ingredients"] : {}}
 				updateIngredients={updateIngredients}
 			/>
-			{recipe["name"] && <Button
-				type="submit"
-				// fullWidth
-				style={{ margin: 8 }}
+			<Grid container spacing={2}>
+			{recipe["name"] &&
+			<Grid item xs={6}>
+				<Button
+					type="submit"
+					fullWidth
+					style={{ margin: 8 }}
 
-				variant="contained"
-				color="alert"
-				onClick={handleDelete}
-				margin={4}
-				>
-					Delete
-			</Button>
+					variant="contained"
+					color="secondary"
+					onClick={handleDelete}
+					margin={4}
+					startIcon={<DeleteIcon/>}
+					>
+						Delete
+				</Button>
+			</Grid>
 			}
-			<Button
-				type="submit"
-				// fullWidth
-				style={{ margin: 8 }}
+			<Grid item xs={6}>
+				<Button
+					type="submit"
+					fullWidth
+					style={{ margin: 8 }}
 
-				variant="contained"
-				color="primary"
-				onClick={recipe["name"]? handleUpdate: handleCreate}
-				>
-				{recipe["name"]? "Update": "Create"}
-			</Button>
+					variant="contained"
+					color="primary"
+					onClick={recipe["name"]? handleUpdate: handleCreate}
+					startIcon={<EditIcon/>}
+					>
+					{recipe["name"]? "Update": "Create"}
+				</Button>
+			</Grid>
+			</Grid>
 		  </form>
 		</div>
 	  </div>
