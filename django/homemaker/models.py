@@ -41,8 +41,7 @@ class Recipe(models.Model):
     instructions = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
-    slug = models.SlugField(max_length=200, null=True,
-                            unique=True, editable=False)
+    slug = models.SlugField(max_length=200, null=True, editable=False)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='recipes')
 
