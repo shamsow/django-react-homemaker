@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../axios';
 
+// date-fns
 import format from 'date-fns/format';
 import formatRelative from 'date-fns/formatRelative';
 import parseISO from 'date-fns/parseISO';
 import formatDistance from 'date-fns/formatDistance';
 
-// import PropTypes from 'prop-types';
+// Material UI
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
@@ -22,14 +23,9 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-// import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-// import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-// import DialogContentText from '@material-ui/core/DialogContentText';
-// import DialogTitle from '@material-ui/core/DialogTitle';
 import Chip from '@material-ui/core/Chip';
-// import Divider from '@material-ui/core/Divider';
 import RecipeCard from './RecipeCard';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
@@ -207,7 +203,7 @@ export default function CollapsibleTable() {
     <TableContainer component={Paper} className={`${classes.appBarSeparator} ${classes.container}`}>
       <Toolbar className={classes.header}>
         <div className={classes.spacer}>spacer</div>
-        <Typography variant="h5" id="tableTitle" component="div" gutterBottom>
+        <Typography variant="h5" id="tableTitle" component="div" color="primary" gutterBottom>
             Meal Plans
         </Typography>
 

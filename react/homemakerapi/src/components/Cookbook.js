@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../axios';
+
+// Material UI
 import { makeStyles } from '@material-ui/core/styles';
-// import DataTable from './DataTable';
 import Grid from '@material-ui/core/Grid';
 import RecipeCard from './RecipeCard';
-import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-// import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Paper  from '@material-ui/core/Paper';
 import RecipeForm from './RecipeForm';
 import Typography from '@material-ui/core/Typography';
 import Fade from '@material-ui/core/Fade';
-import { Divider } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -74,20 +73,11 @@ export default function Cookbook() {
 	return (
 		// <div className={classes.root}>
 		<>
-		{/* <Fab aria-label="add" style={fabStyle}>
-			<RecipeForm 
-				title={<AddIcon />}
-				recipe={{}}
-				user={localStorage.getItem('user_id')}
-				refetchData={refetchData}
-			/>
-			
-		</Fab> */}
 		<Fade in={loaded}>
 		<Paper className={`${classes.appBarSeparator} ${classes.container}`}>
 		<div className={classes.header}>
 			<div className={classes.spacer}>spacer</div>
-			<Typography variant="h5" id="tableTitle" component="div" gutterBottom>
+			<Typography variant="h5" id="tableTitle" component="div" color="primary" gutterBottom>
 				Cook Book
 			</Typography>
 

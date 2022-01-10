@@ -3,12 +3,14 @@ import axiosInstance from '../axios';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Alert from './Alert';
+
+// date-fns
 import PantryForm from './PantryForm';
 import formatRelative from 'date-fns/formatRelative';
 import parseISO from 'date-fns/parseISO';
 import formatDistance from 'date-fns/formatDistance';
-import isDate from 'date-fns/isDate';
 
+// Material UI
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
@@ -28,11 +30,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-// import FilterListIcon from '@material-ui/icons/FilterList';
-// import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
-// import AddCircle from '@material-ui/icons/AddCircle';
 import Fade from '@material-ui/core/Fade';
 
 
@@ -186,7 +185,7 @@ const EnhancedTableToolbar = (props) => {
           {numSelected} selected
         </Typography>
       ) : (
-        <Typography className={classes.title} variant="h5" id="tableTitle" component="div">
+        <Typography className={classes.title} variant="h5" id="tableTitle" component="div" color="primary">
           Pantry
         </Typography>
       )}
