@@ -4,7 +4,8 @@ from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from homemaker.models import Ingredient, Recipe, Meal, MealPlan
-from .serializers import (IngredientSerializer, IngredientSerializerRelated, UnitSerializer, RecipeSerializer,
+from .serializers import (IngredientSerializer, IngredientSerializerRelated, 
+                          UnitSerializer, RecipeSerializer,
                           MealPlanSerializer, MealSerializer,
                           RecipeSerializerGET,
                           MealPlanSerializerGET)
@@ -30,6 +31,8 @@ class PantryList(generics.ListAPIView):
 
     # queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['created', 'modified']
 
     def get_queryset(self):
         """
@@ -80,13 +83,10 @@ class UnitList(APIView):
         return Response(allowed_units)
 
 # Recipes
-
-
 class CookbookList(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     # queryset = Recipe.objects.all()
     serializer_class = RecipeSerializerGET
-    # filter_backends = [DjangoFilterBackend]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
 
     search_fields = ['^slug']
@@ -156,9 +156,9 @@ class MealPlanDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MealSerializer
 
 
-class MealPlanQuery(generics.ListCreateAPIView):
+class MealPlanQuery(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = MealPlanSerializer
+    serializer_class = MealPlanSerializerGET
     lookup_field = 'date'
 
     def get_queryset(self):
@@ -174,28 +174,3 @@ class MealPlanDelete(generics.DestroyAPIView):
 class MealCreate(generics.CreateAPIView):
     queryset = Meal.objects.all()
     serializer_class = MealSerializer
-
-
-
-
-
-# from rest_framework_simplejwt.tokens import RefreshToken
-
-
-# def get_tokens_for_user(user):
-#     refresh = RefreshToken.for_user(user)
-
-#     return {
-#         'refresh': str(refresh),
-#         'access': str(refresh.access_token),
-#         'user': user
-#     }
-
-# # in views.py
-# def login(request):
-#     ...
-#     user = authenticate(email=email, password=password)
-#     if user is not None:
-#         user_id = User.objects.get(email=email)
-#         data = get_tokens_for_user(user_id)
-#         return Response(data, status=HTTP_200_OK)

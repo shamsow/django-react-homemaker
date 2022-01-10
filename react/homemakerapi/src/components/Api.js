@@ -1,12 +1,12 @@
 import React from 'react';
 import axiosInstance from '../axios';
+
+// Material UI
 import { styled } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
-// import Container  from '@material-ui/core/Container';
-// import {Paper, Container, CircularProgress, LinearProgress, FormHelperText} from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import LinearProgress from '@material-ui/core/LinearProgress';

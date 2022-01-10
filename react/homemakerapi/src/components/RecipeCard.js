@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import RecipeForm from './RecipeForm';
+
+// date-fns
 import parseISO from 'date-fns/parseISO';
 import format from 'date-fns/format'
 import isAfter from 'date-fns/isAfter'
+import formatRelative from 'date-fns/formatRelative';
 
+// Material UI
+import { makeStyles } from '@material-ui/core/styles';
 import Paper  from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -18,9 +23,7 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EditIcon from '@material-ui/icons/Edit';
-import RecipeForm from './RecipeForm';
-// import Chip from '@material-ui/core/Chip';
-import { formatRelative } from 'date-fns';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -114,7 +117,7 @@ export default function RecipeCard(props) {
           aria-expanded={expanded}
           aria-label="show more"
         >
-          <ExpandMoreIcon />
+          <ExpandMoreIcon color="primary"/>
         </IconButton>
         
       </CardActions>
