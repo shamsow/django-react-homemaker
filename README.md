@@ -23,7 +23,7 @@
 <!-- [![Contributors][contributors-shield]][contributors-url] -->
 <!-- [![Forks][forks-shield]][forks-url] -->
 <!-- [![Stargazers][stars-shield]][stars-url] -->
-![GitHub issues][issues-url] [![LinkedIn][linkedin-shield]][linkedin-url]
+[![LinkedIn][linkedin-shield]][linkedin-url] ![GitHub issues][issues-url] 
 <!-- [![MIT License][license-shield]][license-url] -->
 
 
@@ -38,20 +38,20 @@
   <h3 align="center">HomeMaker</h3>
 
   <p align="center">
-    One stop solution for home groceries tracking and meal planning
-    <br />
-    <a href="https://github.com/shamsow/django-react-homemaker"><strong>Explore the docs »</strong></a>
+    One stop solution for home groceries tracking, recipe collecting and meal planning
     <br />
     <br />
-    <a href="https://github.com/shamsow/django-react-homemaker">View Demo</a>
+    <br />
+    <a href="https://raw.githubusercontent.com/shamsow/django-react-homemaker/main/demo.gif">View Full Demo</a>
     ·
-    <a href="https://github.com/shamsow/django-react-homemaker/issues">Report Bug</a>
+    <a href="https://github.com/shamsow/django-react-homemaker/issues/new?assignees=&labels=bug&template=bug_report.md&title=">Report Bug</a>
     ·
-    <a href="https://github.com/shamsow/django-react-homemaker/issues">Request Feature</a>
+    <a href="https://github.com/shamsow/django-react-homemaker/issues/new?assignees=&labels=enhancement&template=feature-addition.md&title=%5BFEATURE%5D">Suggest Feature</a>
   </p>
 </p>
 
-
+<!-- Demo gif of Project -->
+![Project Demo](demo.gif)
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
@@ -83,23 +83,37 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-**As of now this project is still incomplete. I estimate it is about 40% done.**
 
 <!-- [![Product Name Screen Shot][product-screenshot]]() -->
-The motivation behind this project was to create a sophisticated application which requires in-depth planning to execute. This is without a doubt the most ambitious project I've started. When I set out to build this app I only had basic knowledge of `React`, and learning by doing proved to be the best way to pick up `React` fast.
+The motivation behind this project was to create a sophisticated application which requires in-depth planning to execute. This is without a doubt the most ambitious project I've done so far. 
+<br />
+When I set out to build this app I only had basic knowledge of `React`, and learning by doing proved to be the best way to pick up `React` fast.
 
-
-### Built With
+### **Built With**
 
 * `django`
 * `react`
+* [django-rest-framework](https://github.com/encode/django-rest-framework/tree/master)
+* [djangorestframework-simplejwt](https://github.com/jazzband/djangorestframework-simplejwt)
+* [Material UI](https://mui.com/)
 
-This project utilizes a `django` backend and a `React` frontend. The `django` backend is implemented as a REST API using `django-rest-framework`. Additionally, I heavily used `material-ui`.
+### **Implementation details**
 
+This project utilizes a `django` backend and a `React` frontend. 
+
+The `django` backend is implemented as a REST API using `django-rest-framework`. The react frontend uses `react-router-dom` for routing. Additionally, I heavily used `material-ui` for React components and design inspiration.
+
+Authentication is achieved using JWT.
+
+All forms have error highlighting with relevant messages,
+
+![Error highlighting](Demo-Errors.png)
+
+This is achieved by response from the API, not checked manually using JavaScript. 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To get a local copy up and running follow these simple steps.
+To get a local copy up and running follow these steps.
 
 ### Prerequisites
 
@@ -127,7 +141,19 @@ To get a local copy up and running follow these simple steps.
 	cd django
 	pip install -r requirements.txt
 	```
+### Start
 
+* Backend
+  ```sh
+  cd django
+  python manage.py migrate
+  python manage.py runserver
+  ```
+* Frontend
+  ```sh
+  cd react/homemakerapi
+  npm start
+  ```
 <!-- USAGE EXAMPLES -->
 <!-- ## Usage
 
@@ -145,7 +171,7 @@ See the [open issues](https://github.com/shamsow/django-react-homemaker/issues) 
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License.
 
 
 
