@@ -3,7 +3,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
 from django.utils.text import slugify
-# Create your models here.
 
 
 class Ingredient(models.Model):
@@ -102,7 +101,7 @@ class MealPlan(models.Model):
 
 # Add Meal to MealPlan after a new Meal is saved
 @receiver(post_save, sender=Meal)
-def my_handler(sender, instance, **kwargs):
+def meal_handler(sender, instance, **kwargs):
     # print('post save callback', sender, instance)
     date = instance.date
     user = instance.user
