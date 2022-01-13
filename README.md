@@ -23,7 +23,7 @@
 <!-- [![Contributors][contributors-shield]][contributors-url] -->
 <!-- [![Forks][forks-shield]][forks-url] -->
 <!-- [![Stargazers][stars-shield]][stars-url] -->
-![GitHub issues][issues-url] [![LinkedIn][linkedin-shield]][linkedin-url]
+[![LinkedIn][linkedin-shield]][linkedin-url] ![GitHub issues][issues-url] 
 <!-- [![MIT License][license-shield]][license-url] -->
 
 
@@ -42,8 +42,8 @@
     <br />
     <br />
     <br />
-    <!-- <a href="https://github.com/shamsow/django-react-homemaker">View Demo</a>
-    · -->
+    <a href="https://raw.githubusercontent.com/shamsow/django-react-homemaker/main/demo.gif">View Full Demo</a>
+    ·
     <a href="https://github.com/shamsow/django-react-homemaker/issues/new?assignees=&labels=bug&template=bug_report.md&title=">Report Bug</a>
     ·
     <a href="https://github.com/shamsow/django-react-homemaker/issues/new?assignees=&labels=enhancement&template=feature-addition.md&title=%5BFEATURE%5D">Suggest Feature</a>
@@ -51,7 +51,7 @@
 </p>
 
 <!-- Demo gif of Project -->
-![](demo.gif)
+![Project Demo](demo.gif)
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
@@ -89,7 +89,7 @@ The motivation behind this project was to create a sophisticated application whi
 <br />
 When I set out to build this app I only had basic knowledge of `React`, and learning by doing proved to be the best way to pick up `React` fast.
 
-### Built With
+### **Built With**
 
 * `django`
 * `react`
@@ -97,7 +97,7 @@ When I set out to build this app I only had basic knowledge of `React`, and lear
 * [djangorestframework-simplejwt](https://github.com/jazzband/djangorestframework-simplejwt)
 * [Material UI](https://mui.com/)
 
-### Implementation details
+### **Implementation details**
 
 This project utilizes a `django` backend and a `React` frontend. 
 
@@ -105,7 +105,11 @@ The `django` backend is implemented as a REST API using `django-rest-framework`.
 
 Authentication is achieved using JWT.
 
+All forms have error highlighting with relevant messages,
 
+![Error highlighting](Demo-Errors.png)
+
+This is achieved by response from the API, not checked manually using JavaScript. 
 <!-- GETTING STARTED -->
 ## Getting Started
 
