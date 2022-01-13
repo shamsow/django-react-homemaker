@@ -42,7 +42,7 @@
     <br />
     <br />
     <br />
-    <a href="https://raw.githubusercontent.com/shamsow/django-react-homemaker/main/demo.gif">View Full Demo</a>
+    <a href="https://raw.githubusercontent.com/shamsow/django-react-homemaker/main/demo.gif" target='_blank'>View Full Demo</a>
     ·
     <a href="https://github.com/shamsow/django-react-homemaker/issues/new?assignees=&labels=bug&template=bug_report.md&title=">Report Bug</a>
     ·
@@ -107,7 +107,7 @@ Authentication is achieved using JWT.
 
 All forms have error highlighting with relevant messages,
 
-![Error highlighting](Demo-Errors.png)
+![Error highlighting](demo-errors.png)
 
 This is achieved by response from the API, not checked manually using JavaScript. 
 <!-- GETTING STARTED -->
