@@ -86,7 +86,6 @@ class MealPlan(models.Model):
     date = models.DateField()
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
-    # recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='mealplans')
 
